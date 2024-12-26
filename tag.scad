@@ -1,21 +1,5 @@
-module corner(size, r) {
-	difference() {
-		cube([r, r, size[2]+0.002]);
-		translate([-0.001, -0.001, -0.001])
-		intersection() {
-			cylinder(r=r+0.001, h=size[2]+0.2, center=false);
-			cube([r+0.001, r+0.001, size[2]+0.2]);
-		}
-	}
-}
+include <BOSL/constants.scad>
+use <BOSL/shapes.scad>
 
-module rcube(size, r) {
-	difference() {
-	cube(size, true);
-
-	translate([size[0]/2 - r + 0.001, size[1]/2 - r + 0.001, -size[2] / 2 - 0.001])
-	corner(size, r);
-	}
-}
-
-rcube([200, 200, 2], 20);
+cuboid([30,30,2.6], fillet=5, edges=EDGE_BK_LF+EDGE_BK_RT+EDGE_FR_LF+EDGE_FR_RT, $fn=100);
+cylinder(h=0.4, d=25.4);
