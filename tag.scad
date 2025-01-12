@@ -31,6 +31,7 @@ module keyhole() {
 }
 
 module mold() {
+	color("red")
 	union() {
 		base();
 		translate([0, 30/2+4.5, 0])
@@ -38,5 +39,45 @@ module mold() {
 	}
 }
 
-mold();
+module heart_sub_component(radius) {
+    rotated_angle = 45;
+    diameter = radius * 2;
+    $fn = 150;
+
+    translate([-radius * cos(rotated_angle), 0, 0]) 
+        rotate(-rotated_angle) union() {
+            circle(radius);
+            translate([0, -radius, 0]) 
+                square(diameter);
+        }
+}
+
+module heart(radius) {
+    center_offset_y = 1.5 * radius * sin(45) - 0.5 * radius;
+
+    translate([0, center_offset_y, 0]) union() {
+        heart_sub_component(radius);
+        mirror([1, 0, 0]) heart_sub_component(radius);
+    }
+}
+
+module h() {
+	translate([0, 0, 2.6-0.6+0.001])
+	linear_extrude(0.6)
+	heart(7);
+}
+
+module main() {
+	mold();
+}
+
+/*
+difference() {
+	main();
+
+	h();
+}
+*/
+
+	h();
 
